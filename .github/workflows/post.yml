@@ -1,0 +1,28 @@
+name: Facebook Auto Poster
+
+on:
+  schedule:
+    - cron: "0 9 * * *"  # every day 9 AM
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run script
+        env:
+          FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+          PAGE_ID: ${{ secrets.PAGE_ID }}
+        run: python main.py
